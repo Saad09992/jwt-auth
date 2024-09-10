@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 
 function RootLayout({ children }) {
   const { msg, error } = useSelector((state) => state.auth);
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     const expiry = localStorage.getItem("token-expiry");

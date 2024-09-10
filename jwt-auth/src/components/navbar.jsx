@@ -7,7 +7,7 @@ import { logout } from "../store/slices/authSlice"; // Import the logout action
 function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const { isAuthenticated, isAdmin } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -36,13 +36,16 @@ function Navbar() {
             </li>
           </>
         )}
+
         {isAuthenticated && (
           <>
-            <li>
-              <Link to="/users" className="text-white hover:text-gray-400">
-                Users
-              </Link>
-            </li>
+            {isAdmin && (
+              <li>
+                <Link to="/users" className="text-white hover:text-gray-400">
+                  Users
+                </Link>
+              </li>
+            )}
             <li>
               <button
                 onClick={handleLogout}

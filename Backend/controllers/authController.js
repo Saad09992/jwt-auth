@@ -57,9 +57,13 @@ export const login = async (req, res) => {
       },
       process.env.SECRET
     );
-    return res
-      .status(201)
-      .json({ msg: "Logged in successfully", token: token, success: true });
+    return res.status(201).json({
+      userId: checkUser._id,
+      isAdmin: checkUser.isAdmin,
+      msg: "Logged in successfully",
+      token: token,
+      success: true,
+    });
   }
 };
 

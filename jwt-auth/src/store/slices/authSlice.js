@@ -5,7 +5,8 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     token: localStorage.getItem("token") || null,
-    user: null,
+    userId: localStorage.getItem("userId") || null,
+    isAdmin: false,
     error: "",
     success: false,
     msg: "",
@@ -14,12 +15,13 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.token = null;
-      state.user = null;
+      state.userId = null;
       state.error = null;
       state.msg = "User logout successfully";
       state.isAuthenticated = false;
       localStorage.removeItem("token");
       localStorage.removeItem("token-expiry");
+      localStorage.removeItem("userId");
     },
     setUser: (state, action) => {
       state.user = action.payload;
@@ -41,11 +43,14 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.token = action.payload.token;
+        state.userId = action.payload.userId;
         state.msg = action.payload.msg;
         state.success = action.payload.success;
+        state.isAdmin = action.payload.isAdmin;
         state.error = "";
         state.isAuthenticated = true;
         localStorage.setItem("token", state.token);
+        localStorage.setItem("userId", state.userId);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.payload.error;
