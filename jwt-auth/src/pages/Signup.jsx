@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,8 @@ function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { success, error, msg } = useSelector((state) => state.auth);
+
+  const [redirect, setRedirect] = useState(false);
 
   const signupFormik = useFormik({
     initialValues: {
@@ -29,7 +31,11 @@ function Signup() {
     }),
     onSubmit: async (values) => {
       try {
-        await dispatch(registerUser(values)).unwrap();
+        const response = await dispatch(registerUser(values)).unwrap();
+        if (response.success) {
+          setRedirect(true);
+          console.log("redirect set to true");
+        }
       } catch (error) {
         console.error(error);
       }
@@ -37,10 +43,10 @@ function Signup() {
   });
 
   useEffect(() => {
-    if (success) {
+    if (redirect) {
       navigate("/login");
     }
-  }, [success, navigate]);
+  }, [redirect, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

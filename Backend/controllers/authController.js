@@ -57,9 +57,16 @@ export const login = async (req, res) => {
       },
       process.env.SECRET
     );
+    await User.updateOne({ _id: checkUser._id }, { token: token });
     return res.status(201).json({
       userId: checkUser._id,
       isAdmin: checkUser.isAdmin,
+      userData: {
+        username: checkUser.username,
+        email: checkUser.email,
+        isAdmin: checkUser.isAdmin,
+        userId: checkUser._id,
+      },
       msg: "Logged in successfully",
       token: token,
       success: true,
@@ -69,4 +76,27 @@ export const login = async (req, res) => {
 
 export const Logout = async (req, res) => {
   res.send("Login sucessful");
+};
+
+export const getUserData = async (req, res) => {
+  const { token } = req.query;
+  try {
+    const getUser = await User.findOne({ token });
+    if (getUser) {
+      res.status(200).json({
+        msg: "User data fetched sucessfully",
+        userData: {
+          username: getUser.username,
+          email: getUser.email,
+          isAdmin: getUser.isAdmin,
+          userId: getUser._id,
+        },
+        success: true,
+      });
+    } else {
+      res.status(404).json({ msg: "User Token invalid", success: false });
+    }
+  } catch (error) {
+    res.status(403).json({ msg: "Server error" });
+  }
 };

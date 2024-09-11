@@ -19,3 +19,14 @@ export const loginUser = createAsyncThunk("/login", async (data) => {
     return error.response.data;
   }
 });
+
+export const getUserData = createAsyncThunk("/get-user-data", async (token) => {
+  try {
+    const response = await backend.get("/get-user-data", {
+      params: { token },
+    });
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+});

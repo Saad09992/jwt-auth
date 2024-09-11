@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUsers } from "../methods/adminMethod";
+import { delUser, getUsers } from "../methods/adminMethod";
 
 const adminSlice = createSlice({
   name: "admin",
@@ -11,18 +11,27 @@ const adminSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getUsers.fulfilled, (state, action) => {
-      state.users = action.payload.users;
-      state.success = action.payload.success;
-      state.error = false;
-      state.users = action.payload.users;
-      state.msg = action.payload.msg;
-    });
-    builder.addCase(getUsers.rejected, (state, action) => {
-      state.error = action.payload.error;
-      state.success = false;
-      state.users = [];
-    });
+    builder
+      .addCase(getUsers.fulfilled, (state, action) => {
+        state.users = action.payload.users;
+        state.success = action.payload.success;
+        state.error = false;
+        state.users = action.payload.users;
+        state.msg = action.payload.msg;
+      })
+      .addCase(getUsers.rejected, (state, action) => {
+        state.error = action.payload.error;
+        state.success = false;
+        state.users = [];
+      })
+      .addCase(delUser.fulfilled, (state, action) => {
+        state.msg = action.payload.msg;
+        state.success = action.payload.success;
+      })
+      .addCase(delUser.rejected, (state, action) => {
+        state.msg = action.payload.msg;
+        state.success = false;
+      });
   },
 });
 

@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import Navbar from "../components/navbar";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { getUserData } from "../store/methods/authMethod";
 
 function RootLayout({ children }) {
+  const dispatch = useDispatch();
   const { msg, error } = useSelector((state) => state.auth);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -11,9 +13,11 @@ function RootLayout({ children }) {
 
     if (token && expiry && new Date().getTime() < expiry) {
       console.log("Token valid");
+      dispatch(getUserData(token));
     } else {
       localStorage.removeItem("token");
       localStorage.removeItem("token-expiry");
+      console.log("token invalid");
     }
   }, []);
 

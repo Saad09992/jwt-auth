@@ -18,12 +18,18 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  token: {
+    type: String,
+    default: null,
+  },
   isVerified: {
     type: Boolean,
     default: false,
   },
-  resetPasswordToken: String,
-  resetPasswordExpiresAt: Date,
+  isDel: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export const User = mongoose.model("users", userSchema);

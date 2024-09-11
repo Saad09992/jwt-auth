@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser, loginUser } from "../methods/authMethod";
+import { registerUser, loginUser, getUserData } from "../methods/authMethod";
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     token: localStorage.getItem("token") || null,
-    userId: localStorage.getItem("userId") || null,
-    isAdmin: false,
+    userData: [],
     error: "",
     success: false,
     msg: "",
@@ -15,16 +14,13 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.token = null;
-      state.userId = null;
       state.error = null;
+      state.userData = [];
       state.msg = "User logout successfully";
       state.isAuthenticated = false;
+      state.success = false;
       localStorage.removeItem("token");
       localStorage.removeItem("token-expiry");
-      localStorage.removeItem("userId");
-    },
-    setUser: (state, action) => {
-      state.user = action.payload;
     },
     setAuthenticated: (state, action) => {
       state.isAuthenticated = action.payload;
@@ -43,17 +39,26 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.token = action.payload.token;
-        state.userId = action.payload.userId;
         state.msg = action.payload.msg;
         state.success = action.payload.success;
-        state.isAdmin = action.payload.isAdmin;
+        state.userData = action.payload.userData;
         state.error = "";
         state.isAuthenticated = true;
         localStorage.setItem("token", state.token);
-        localStorage.setItem("userId", state.userId);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.payload.error;
+        state.success = false;
+      })
+      .addCase(getUserData.fulfilled, (state, action) => {
+        state.msg = action.payload.msg;
+        state.userData = action.payload.userData;
+        state.success = action.payload.success;
+      })
+      .addCase(getUserData.rejected, (state, action) => {
+        state.error = action.payload.error;
+        state.msg = action.payload.msg;
+        state.success = false;
       });
   },
 });

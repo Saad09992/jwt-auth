@@ -11,3 +11,12 @@ export const getUsers = createAsyncThunk("/get-users", async (userId) => {
     console.log(error);
   }
 });
+
+export const delUser = createAsyncThunk("/del-user", async (userId) => {
+  try {
+    const response = await adminBackend.post("/del-user", { userId });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+});
