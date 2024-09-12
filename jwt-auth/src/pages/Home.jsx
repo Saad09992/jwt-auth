@@ -1,8 +1,15 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getResetPasswordMail } from "../store/methods/authMethod";
 
 function Home() {
+  const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.auth);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(getResetPasswordMail(userData.email));
+  };
 
   return (
     <>
@@ -36,6 +43,13 @@ function Home() {
               </label>
               <h1 className="text-lg text-gray-900">{userData?.email}</h1>
             </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onClick={handleSubmit}
+            >
+              Change Password
+            </button>
           </div>
         </div>
       ) : (

@@ -39,7 +39,7 @@ function Navbar() {
 
         {isAuthenticated && (
           <>
-            {userData.isAdmin && (
+            {userData && userData.isAdmin && (
               <li>
                 <Link to="/users" className="text-white hover:text-gray-400">
                   Users

@@ -7,16 +7,21 @@ const adminSlice = createSlice({
     users: [],
     success: false,
     error: null,
-    msg: null,
+    msg: "",
   },
-  reducers: {},
+  reducers: {
+    resetMsgAndSuccessAdmin: (state) => {
+      state.msg = "";
+      state.error = "";
+      state.success = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUsers.fulfilled, (state, action) => {
         state.users = action.payload.users;
         state.success = action.payload.success;
         state.error = false;
-        state.users = action.payload.users;
         state.msg = action.payload.msg;
       })
       .addCase(getUsers.rejected, (state, action) => {
@@ -35,5 +40,5 @@ const adminSlice = createSlice({
   },
 });
 
-export const {} = adminSlice.actions;
+export const { resetMsgAndSuccessAdmin } = adminSlice.actions;
 export default adminSlice.reducer;

@@ -3,6 +3,7 @@ import Navbar from "../components/navbar";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getUserData } from "../store/methods/authMethod";
+import { resetMsgAndSuccess } from "../store/slices/authSlice";
 
 function RootLayout({ children }) {
   const dispatch = useDispatch();
@@ -24,12 +25,14 @@ function RootLayout({ children }) {
   useEffect(() => {
     if (msg) {
       toast.success(msg);
+      dispatch(resetMsgAndSuccess());
     }
   }, [msg]);
 
   useEffect(() => {
     if (error) {
       toast.error(error);
+      dispatch(resetMsgAndSuccess());
     }
   }, [error]);
 

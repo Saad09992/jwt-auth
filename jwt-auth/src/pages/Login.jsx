@@ -8,8 +8,6 @@ import { useNavigate } from "react-router-dom";
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const authState = useSelector((state) => state.auth);
-
   const loginFormik = useFormik({
     initialValues: {
       email: "",
@@ -108,6 +106,13 @@ function Login() {
             className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition duration-300"
           >
             Login
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("/email ")}
+            className="w-full mt-4 bg-gray-600 text-white py-2 rounded-md hover:bg-gray-700 transition duration-300"
+          >
+            Forgot Password
           </button>
         </form>
       </div>

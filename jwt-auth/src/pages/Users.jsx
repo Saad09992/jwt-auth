@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { delUser, getUsers } from "../store/methods/adminMethod";
-
+import { ToastContainer, toast } from "react-toastify";
+import { resetMsgAndSuccess } from "../store/slices/authSlice";
+import { resetMsgAndSuccessAdmin } from "../store/slices/adminSlice";
 function Users() {
   const { userData } = useSelector((state) => state.auth);
-  const { users = [], success } = useSelector((state) => state.admin);
+  const { users = [], success, msg } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
 
   const handleDel = (userId) => {
@@ -22,6 +24,13 @@ function Users() {
       dispatch(getUsers(userData.userId));
     }
   }, [userData.userId, dispatch, success]);
+
+  useEffect(() => {
+    if (msg) {
+      toast.success(msg);
+      dispatch(resetMsgAndSuccessAdmin());
+    }
+  }, [msg]);
 
   if (!userData.isAdmin) {
     return (
@@ -52,6 +61,9 @@ function Users() {
                   Email
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Verified
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -67,6 +79,9 @@ function Users() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {user.email}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {user.isVerified ? "Yes" : "No"}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <button
