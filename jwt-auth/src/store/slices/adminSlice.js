@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { delUser, getUsers } from "../methods/adminMethod";
+import { delUser, getUsers, setUserRole } from "../methods/adminMethod";
 
 const adminSlice = createSlice({
   name: "admin",
@@ -34,6 +34,14 @@ const adminSlice = createSlice({
         state.success = action.payload.success;
       })
       .addCase(delUser.rejected, (state, action) => {
+        state.msg = action.payload.msg;
+        state.success = false;
+      })
+      .addCase(setUserRole.fulfilled, (state, action) => {
+        state.msg = action.payload.msg;
+        state.success = action.payload.success;
+      })
+      .addCase(setUserRole.rejected, (state, action) => {
         state.msg = action.payload.msg;
         state.success = false;
       });

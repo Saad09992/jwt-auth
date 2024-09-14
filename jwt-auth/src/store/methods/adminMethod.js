@@ -20,3 +20,17 @@ export const delUser = createAsyncThunk("/del-user", async (userId) => {
     console.log(error);
   }
 });
+
+export const setUserRole = createAsyncThunk(
+  "/set-user-admin",
+  async (userId) => {
+    try {
+      const response = await adminBackend.post("/set-user-admin", {
+        userId,
+      });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);

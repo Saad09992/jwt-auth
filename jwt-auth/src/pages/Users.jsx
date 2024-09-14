@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { delUser, getUsers } from "../store/methods/adminMethod";
+import { delUser, getUsers, setUserRole } from "../store/methods/adminMethod";
 import { ToastContainer, toast } from "react-toastify";
 import { resetMsgAndSuccess } from "../store/slices/authSlice";
 import { resetMsgAndSuccessAdmin } from "../store/slices/adminSlice";
@@ -11,6 +11,10 @@ function Users() {
 
   const handleDel = (userId) => {
     dispatch(delUser(userId));
+  };
+
+  const handleRole = (userId) => {
+    dispatch(setUserRole(userId));
   };
 
   useEffect(() => {
@@ -64,6 +68,9 @@ function Users() {
                   Verified
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Admin
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -84,14 +91,27 @@ function Users() {
                     {user.isVerified ? "Yes" : "No"}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <button
-                      className="bg-red-400 p-2 rounded-lg text-white text-base hover:bg-red-500 "
-                      onClick={() => {
-                        handleDel(user._id);
-                      }}
-                    >
-                      Delete
-                    </button>
+                    {user.isAdmin ? "Yes" : "No"}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <div className="flex flex-row gap-2">
+                      <button
+                        className="bg-green-400 p-2 rounded-lg text-white text-base hover:bg-g  reen-500 "
+                        onClick={() => {
+                          handleRole(user._id);
+                        }}
+                      >
+                        Change Role
+                      </button>
+                      <button
+                        className="bg-red-400 p-2 rounded-lg text-white text-base hover:bg-red-500 "
+                        onClick={() => {
+                          handleDel(user._id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
